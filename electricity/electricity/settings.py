@@ -13,7 +13,10 @@ SECRET_KEY = config.SECRET_KEY
 
 DEBUG = config.DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    config.LOCAL_HOST,
+    config.SERVER_HOST
+]
 
 INSTALLED_APPS = [
     'mainsite.apps.MainsiteConfig',

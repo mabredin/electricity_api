@@ -7,30 +7,33 @@ class Agent(models.Model):
         max_length=100,
         help_text="Введите фамилию исполнителя",
         null=False,
-        verbose_name="Фамилия исполнителя"
+        verbose_name="Фамилия"
     )
     name = models.CharField(
         max_length=100,
         help_text="Введите имя исполнителя",
         null=False,
-        verbose_name="Имя исполнителя"
+        verbose_name="Имя"
     )
     patronymic = models.CharField(
         max_length=100,
         help_text="Введите отчество исполнителя",
         null=True,
         blank=True,
-        verbose_name="Отчество исполнителя"
+        verbose_name="Отчество"
     )
     phone = models.CharField(
         max_length=20,
         help_text="Введите номер телефона исполнителя",
         null=False,
-        verbose_name="Номер телефона исполнителя",
+        verbose_name="Номер телефона",
         unique=True
     )
 
     def __str__(self):
+        return self.get_full_name()
+
+    def get_full_name(self):
         return f'{self.surname} {self.name} {self.patronymic}'
 
     class Meta:
@@ -43,18 +46,18 @@ class Contract(models.Model):
     number = models.CharField(
         max_length=100,
         help_text="Введите номер договора",
-        verbose_name="Номер договора",
+        verbose_name="Номер",
         null=False,
         unique=True
     )
     date_of_issue = models.DateField(
         help_text="Введите дату оформления договора",
         null=False,
-        verbose_name="Дата оформления договора"
+        verbose_name="Дата оформления"
     )
     status = models.BooleanField(
         help_text="Выберите статус договора",
-        verbose_name="Статус договора",
+        verbose_name="Статус",
         default=True
     )
     slug = models.SlugField(
@@ -78,20 +81,20 @@ class Node(models.Model):
     name = models.CharField(
         max_length=100,
         help_text="Введите имя объекта",
-        verbose_name="Имя объекта",
+        verbose_name="Имя",
         null=False,
         unique=True
     )
     address = models.CharField(
         max_length=200,
         help_text="Введите адрес объекта",
-        verbose_name="Адрес объекта",
+        verbose_name="Адрес",
         null=False,
         unique=True
     )
     status = models.BooleanField(
         help_text="Выберите статус объекта",
-        verbose_name="Статус объекта",
+        verbose_name="Статус",
         default=True
     )
     slug = models.SlugField(
@@ -114,7 +117,7 @@ class Type(models.Model):
     name = models.CharField(
         max_length=100,
         help_text="Введите тип объекта",
-        verbose_name="Тип объекта",
+        verbose_name="Тип",
         null=False,
         unique=True
     )
@@ -132,21 +135,21 @@ class Object(models.Model):
     code = models.CharField(
         max_length=100,
         help_text="Введите код объекта",
-        verbose_name="Код объекта",
+        verbose_name="Код",
         null=False,
         unique=True
     )
     address = models.CharField(
         max_length=200,
         help_text="Введите адрес объекта",
-        verbose_name="Адрес объекта",
+        verbose_name="Адрес",
         null=False
     )
     type = models.ForeignKey(
         'Type',
         on_delete=models.PROTECT,
         help_text="Выберите тип объекта",
-        verbose_name="Тип объекта",
+        verbose_name="Тип",
         null=False,
         related_name='type_object'
     )
@@ -154,7 +157,7 @@ class Object(models.Model):
         'Node',
         on_delete=models.PROTECT,
         help_text="Выберите узел объекта",
-        verbose_name="Узел объекта",
+        verbose_name="Узел",
         null=False,
         related_name='node_object'
     )
@@ -162,7 +165,7 @@ class Object(models.Model):
         'Contract',
         on_delete=models.PROTECT,
         help_text="Выберите договор объекта",
-        verbose_name="Договор объекта",
+        verbose_name="Договор",
         null=False,
         related_name='contract_object'
     )
@@ -177,15 +180,15 @@ class Object(models.Model):
     )
     start_value = models.IntegerField(
         help_text="Введите начальное показание счетчика",
-        verbose_name="Начальное показание счетчика",
+        verbose_name="Начальное показание",
         null=False,
         default=0,
     )
     final_value = models.IntegerField(
         help_text="Введите конечное показание счетчика",
-        null=False,
-        default=0,
-        verbose_name="Конечное показание счетчика"
+        null=True,
+        blank=True,
+        verbose_name="Конечное показание"
     )
     info = models.TextField(
         help_text="Введите дополнительную информацию",
@@ -195,7 +198,7 @@ class Object(models.Model):
     )
     status = models.BooleanField(
         help_text="Выберите статус объекта",
-        verbose_name="Статус объекта",
+        verbose_name="Статус",
         default=True
     )
     log = models.TextField(
@@ -218,21 +221,20 @@ class ObjectHistory(models.Model):
     code = models.CharField(
         max_length=100,
         help_text="Введите код объекта",
-        verbose_name="Код объекта",
-        null=False,
-        unique=True
+        verbose_name="Код",
+        null=False
     )
     address = models.CharField(
         max_length=200,
         help_text="Введите адрес объекта",
-        verbose_name="Адрес объекта",
+        verbose_name="Адрес",
         null=False
     )
     type = models.ForeignKey(
         'Type',
         on_delete=models.PROTECT,
         help_text="Выберите тип объекта",
-        verbose_name="Тип объекта",
+        verbose_name="Тип",
         null=False,
         related_name='type_objecthistory'
     )
@@ -240,7 +242,7 @@ class ObjectHistory(models.Model):
         'Node',
         on_delete=models.PROTECT,
         help_text="Выберите узел объекта",
-        verbose_name="Узел объекта",
+        verbose_name="Узел",
         null=False,
         related_name='node_objecthistory'
     )
@@ -248,7 +250,7 @@ class ObjectHistory(models.Model):
         'Contract',
         on_delete=models.PROTECT,
         help_text="Выберите договор объекта",
-        verbose_name="Договор объекта",
+        verbose_name="Договор",
         null=False,
         related_name='contract_objecthistory'
     )
@@ -263,13 +265,13 @@ class ObjectHistory(models.Model):
     )
     start_value = models.IntegerField(
         help_text="Введите начальное показание счетчика",
-        verbose_name="Начальное показание счетчика",
+        verbose_name="Начальное показание",
         null=False
     )
     final_value = models.IntegerField(
         help_text="Введите конечное показание счетчика",
         null=False,
-        verbose_name="Конечное показание счетчика"
+        verbose_name="Конечное показание"
     )
     info = models.TextField(
         help_text="Введите дополнительную информацию",
@@ -279,7 +281,7 @@ class ObjectHistory(models.Model):
     )
     status = models.BooleanField(
         help_text="Выберите статус объекта",
-        verbose_name="Статус объекта",
+        verbose_name="Статус",
         default=True
     )
     log = models.TextField(
@@ -290,12 +292,12 @@ class ObjectHistory(models.Model):
     )
     month = models.IntegerField(
         help_text="Введите месяц показания",
-        verbose_name="Месяц показания",
+        verbose_name="Месяц",
         null=False
     )
     year = models.IntegerField(
         help_text="Введите год показания",
-        verbose_name="Год показания",
+        verbose_name="Год",
         null=False
     )
 
